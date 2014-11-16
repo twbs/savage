@@ -32,6 +32,9 @@ By automating the process of initiating Travis-based Sauce tests and posting the
 * ~~[Bootstrap](https://github.com/twbs/bootstrap); see [$GITHUB_BOT_ACCOUNT]~~ (FUTURE)
 * ~~[Video.js](https://github.com/videojs/video.js); see [$GITHUB_BOT_ACCOUNT]~~ (FUTURE, MAYBE)
 
+## DISCLAIMER
+The current authors are not security experts and this project has not been subjected to a third-party security audit.
+
 ## Usage
 Using Savage involves two git repos (which can both be the same repo, although that's much less secure):
 * The *main repo*
