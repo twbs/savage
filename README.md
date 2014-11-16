@@ -36,7 +36,7 @@ By automating the process of initiating Travis-based Sauce tests and posting the
 The current authors are not security experts and this project has not been subjected to a third-party security audit.
 
 ## Usage
-Using Savage involves two git repos (which can both be the same repo, although that's much less secure):
+Using Savage involves two GitHub repos (which can both be the same repo, although that's much less secure):
 * The *main repo*
   * This repo is the one receiving pull requests
   * Savage needs its GitHub web hook set up for this repo
