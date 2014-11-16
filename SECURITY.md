@@ -1,5 +1,5 @@
 ## DISCLAIMER
-The author is not a security expert and this project has not been subjected to a third-party security audit.
+The current author are not security experts and this project has not been subjected to a third-party security audit.
 
 ## Responsible disclosure; Security contact info
 
