@@ -66,12 +66,11 @@ class SavageWebService(
                 Try { Integer.parseInt(event.branchName.name.stripPrefix(settings.BranchPrefix)) }.flatMap{ intStr => Try{ PullRequestNumber(intStr).get } } match {
                   case Failure(exc) => log.error(exc, s"Invalid Savage branch name from Travis event: ${event.branchName}")
                   case Success(prNum) => {
-                    // FIXME: check event.build_url is safe
                     branchDeleter ! BranchDeletionRequest(event.branchName, event.commitSha)
                     pullRequestCommenter ! PullRequestBuildResult(
                       prNum = prNum,
                       commitSha = event.commitSha,
-                      buildUrl = event.build_url,
+                      buildUrl = event.buildUrl,
                       succeeded = event.status.isSuccessful
                     )
                   }

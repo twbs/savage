@@ -21,7 +21,7 @@ class PullRequestCommenter extends GitHubActorWithLogging {
       }
 
       val commentMarkdown = s"""
-        |Automated cross-browser testing via Sauce Labs and Travis CI shows that the changes in this pull request are
+        |Automated cross-browser testing via Sauce Labs and Travis CI shows that the changes in this pull request are:
         |${statusRemark}
         |
         |Commit: ${commitSha.sha}
