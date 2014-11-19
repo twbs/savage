@@ -13,16 +13,17 @@ class PullRequestCommenter extends GitHubActorWithLogging {
 
   override def receive = {
     case PullRequestBuildResult(prNum, commitSha, buildUrl, succeeded) => {
+      val mythicalStatus = if (succeeded) { "**CONFIRMED**" } else { "**BUSTED**" }
+      val plainStatus = if (succeeded) { "**Tests passed.**" } else { "**Tests failed.**" }
       val statusRemark = if (succeeded) {
-        "CONFIRMED (Tests passed)"
+        "CONFIRMED ()"
       }
       else {
-        "BUSTED (Tests failed)"
+        "BUSTED ()"
       }
 
       val commentMarkdown = s"""
-        |Automated cross-browser testing via Sauce Labs and Travis CI shows that the changes in this pull request are:
-        |${statusRemark}
+        |${plainStatus} Automated cross-browser testing via Sauce Labs and Travis CI shows that the changes in this pull request are: ${mythicalStatus}
         |
         |Commit: ${commitSha.sha}
         |Build details: ${buildUrl}
