@@ -29,8 +29,7 @@ By automating the process of initiating Travis-based Sauce tests and posting the
 7. When the build finishes, post a comment to the GitHub pull request explaining the test results, and delete the corresponding branch.
 
 ## Used by
-* ~~[Bootstrap](https://github.com/twbs/bootstrap); see [$GITHUB_BOT_ACCOUNT]~~ (FUTURE)
-* ~~[Video.js](https://github.com/videojs/video.js); see [$GITHUB_BOT_ACCOUNT]~~ (FUTURE, MAYBE)
+* [Bootstrap](https://github.com/twbs/bootstrap); see [@twbs-savage](https://github.com/twbs-savage)
 
 ## DISCLAIMER
 The current authors are not security experts and this project has not been subjected to a third-party security audit.
