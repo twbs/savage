@@ -15,12 +15,6 @@ class PullRequestCommenter extends GitHubActorWithLogging {
     case PullRequestBuildResult(prNum, commitSha, buildUrl, succeeded) => {
       val mythicalStatus = if (succeeded) { "**CONFIRMED**" } else { "**BUSTED**" }
       val plainStatus = if (succeeded) { "**Tests passed.**" } else { "**Tests failed.**" }
-      val statusRemark = if (succeeded) {
-        "CONFIRMED ()"
-      }
-      else {
-        "BUSTED ()"
-      }
 
       val commentMarkdown = s"""
         |${plainStatus} Automated cross-browser testing via Sauce Labs and Travis CI shows that the changes in this pull request are: ${mythicalStatus}
