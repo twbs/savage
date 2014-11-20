@@ -1,6 +1,6 @@
 Savage
 ======
-[![Build Status](https://travis-ci.org/cvrebert/savage.svg?branch=master)](https://travis-ci.org/cvrebert/savage)
+[![Build Status](https://travis-ci.org/twbs/savage.svg?branch=master)](https://travis-ci.org/twbs/savage)
 
 Savage is a service watches for new or updated pull requests on a given GitHub repository. For each pull request, it evaluates whether the changes are "safe" (i.e. we can run a Travis CI build with them with heightened permissions without worrying about security issues) and "interesting" (i.e. would benefit from a Travis CI build with them with heightened permissions), based on which files were modified. If the pull request is "safe" and "interesting", then it initiates a Travis CI build with heightened permissions on a specified GitHub repository. When the Travis CI build completes, it posts a comment with the test results on the pull request. If the test failed, the pull requester can then revise their code to fix the problem.
 
@@ -45,7 +45,7 @@ Using Savage involves two GitHub repos (which can both be the same repo, althoug
   * Travis CI should be set up for this repo
   * Savage needs to be a Collaborator on this repo, so that it can push branches to it and also delete branches from it
 
-Java 7+ is required to run Savage. For instructions on building Savage yourself, see [the Contributing docs](https://github.com/cvrebert/savage/blob/master/CONTRIBUTING.md).
+Java 7+ is required to run Savage. For instructions on building Savage yourself, see [the Contributing docs](https://github.com/twbs/savage/blob/master/CONTRIBUTING.md).
 
 Savage accepts exactly one optional command-line argument, which is the port number to run its HTTP server on, e.g. `8080`. If you don't provide this argument, the default port specified in `application.conf` will be used. Once you've built the JAR, run e.g. `java -jar savage-assembly-1.0.jar 8080` (replace `8080` with whatever port number you want). Note that running on ports <= 1024 requires root privileges (not recommended) or using port mapping.
 
