@@ -20,4 +20,4 @@ Hacking on Savage
 3. If the build is successful, the desired JAR will be generated as `target/scala-2.10/savage-assembly-1.0.jar`.
 
 ## Licensing
-Savage is licensed under The MIT License. By contributing to Savage, you agree to license your contribution under [The MIT License](https://github.com/cvrebert/savage/blob/master/LICENSE.txt).
+Savage is licensed under The MIT License. By contributing to Savage, you agree to license your contribution under [The MIT License](https://github.com/twbs/savage/blob/master/LICENSE.txt).
