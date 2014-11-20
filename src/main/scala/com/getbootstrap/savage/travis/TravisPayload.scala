@@ -22,7 +22,7 @@ object FairlySafeUrl {
   def apply(url: Uri): Try[String] = {
     val cleanUrl = url.withScheme("https").withQuery(Uri.Query.Empty).withoutFragment.toString
     cleanUrl match {
-      case SafeishUrlRegex(_) => Success(cleanUrl)
+      case SafeishUrlRegex(_*) => Success(cleanUrl)
       case _ => Failure(new IllegalStateException(s"Travis URL failed safety check; URL: ${cleanUrl}"))
     }
 

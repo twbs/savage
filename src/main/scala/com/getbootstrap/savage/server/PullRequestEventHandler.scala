@@ -22,21 +22,17 @@ class PullRequestEventHandler(protected val pusher: ActorRef) extends GitHubActo
 
   private val NormalPathRegex = "^[a-zA-Z0-9_./-]+$".r
   private def isNormal(path: Path): Boolean = {
-    path match {
-      case NormalPathRegex(_) => true
-      case _ => false
+    path.toString match {
+      case NormalPathRegex(_*) => true
+      case _ => {
+        log.info(s"Abnormal path: ${path}")
+        false
+      }
     }
   }
   private def areSafe(paths: Set[Path]): Boolean = {
     implicit val logger = log
-    val unsafeOption = paths.find{ path => !isNormal(path) || !settings.Whitelist.isAllowed(path) }
-    unsafeOption match {
-      case None => true
-      case Some(unsafePath) => {
-        log.info(s"Unsafe path: ${unsafePath}")
-        false
-      }
-    }
+    paths.forall{ path => isNormal(path) && settings.Whitelist.isAllowed(path) }
   }
   private def areInteresting(paths: Set[Path]): Boolean = {
     implicit val logger = log
