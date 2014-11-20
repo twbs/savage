@@ -66,7 +66,7 @@ class PullRequestEventHandler(protected val pusher: ActorRef) extends GitHubActo
                       log.error(exc, s"Could not get affected files for commits ${baseSha}...${headSha} for ${foreignRepo}")
                     }
                     case Success(affectedFiles) => {
-                      log.debug("Filed affected by {}: {}", prNum, affectedFiles)
+                      log.debug("Files affected by {}: {}", prNum, affectedFiles)
                       if (areSafe(affectedFiles)) {
                         if (areInteresting(affectedFiles)) {
                           logPrInfo(s"Requesting build for safe & interesting PR")
