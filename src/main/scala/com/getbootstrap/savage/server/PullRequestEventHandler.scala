@@ -29,7 +29,14 @@ class PullRequestEventHandler(protected val pusher: ActorRef) extends GitHubActo
   }
   private def areSafe(paths: Set[Path]): Boolean = {
     implicit val logger = log
-    paths.forall{ path => isNormal(path) && settings.Whitelist.isAllowed(path) }
+    val unsafeOption = paths.find{ path => !isNormal(path) || !settings.Whitelist.isAllowed(path) }
+    unsafeOption match {
+      case None => true
+      case Some(unsafePath) => {
+        log.info(s"Unsafe path: ${unsafePath}")
+        false
+      }
+    }
   }
   private def areInteresting(paths: Set[Path]): Boolean = {
     implicit val logger = log
@@ -63,6 +70,7 @@ class PullRequestEventHandler(protected val pusher: ActorRef) extends GitHubActo
                       log.error(exc, s"Could not get affected files for commits ${baseSha}...${headSha} for ${foreignRepo}")
                     }
                     case Success(affectedFiles) => {
+                      log.debug("Filed affected by {}: {}", prNum, affectedFiles)
                       if (areSafe(affectedFiles)) {
                         if (areInteresting(affectedFiles)) {
                           logPrInfo(s"Requesting build for safe & interesting PR")
