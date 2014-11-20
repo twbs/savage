@@ -51,6 +51,8 @@ Savage accepts exactly one optional command-line argument, which is the port num
 
 When running Savage, its working directory needs to be a non-bare git repo which is a clone of the repo being monitored.
 
+If you're using Sauce, we recommend [using a sub-account](https://saucelabs.com/sub-accounts) for Savage, to prevent compromise of your main account.
+
 Other settings live in `application.conf`. In addition to the normal Akka and Spray settings, Savage offers the following settings:
 ```
 savage {
