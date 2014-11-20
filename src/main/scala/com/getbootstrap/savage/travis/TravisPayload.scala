@@ -18,7 +18,7 @@ case class TravisPayload(
 }
 
 object FairlySafeUrl {
-  private val SafeishUrlRegex = "^[a-zA-Z0-9/:_-]+$".r
+  private val SafeishUrlRegex = "^[a-zA-Z0-9/:._-]+$".r
   def apply(url: Uri): Try[String] = {
     val cleanUrl = url.withScheme("https").withQuery(Uri.Query.Empty).withoutFragment.toString
     cleanUrl match {
