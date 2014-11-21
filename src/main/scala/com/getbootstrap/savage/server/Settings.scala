@@ -22,6 +22,7 @@ class SettingsImpl(config: Config) extends Extension {
   val Whitelist: FilePathWhitelist = new FilePathWhitelist(config.getStringList("savage.whitelist").asScala)
   val Watchlist: FilePathWatchlist = new FilePathWatchlist(config.getStringList("savage.file-watchlist").asScala)
   val BranchPrefix: String = config.getString("savage.branch-prefix")
+  val IgnoreBranchesFromMainRepo: Boolean = config.getBoolean("savage.ignore-branches-from-watched-repo")
 }
 object Settings extends ExtensionId[SettingsImpl] with ExtensionIdProvider {
   override def lookup() = Settings

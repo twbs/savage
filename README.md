@@ -62,6 +62,8 @@ savage {
     github-repo-to-watch = "twbs/bootstrap"
     // Full name of GitHub repo to push test branches to
     github-test-repo = "twbs/bootstrap-tests"
+    // Ignore pull requests whose branch is from the watched repo (and is thus from a project team member)
+    ignore-branches-from-watched-repo = true
     // List of Unix file globs constituting the whitelist of safely editable files
     whitelist = [
         "**.md",

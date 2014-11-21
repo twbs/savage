@@ -57,6 +57,7 @@ class PullRequestEventHandler(protected val pusher: ActorRef) extends GitHubActo
             case "master" => {
               prHead.getRepo.repositoryId match {
                 case None => log.error(s"Received event from GitHub about repository with unsafe name")
+                case Some(settings.MainRepoId) if settings.IgnoreBranchesFromMainRepo => log.info("Ignoring PR whose branch is from the main repo, per settings.")
                 case Some(foreignRepo) => {
                   val baseSha = bsBase.commitSha
                   val headSha = prHead.commitSha
