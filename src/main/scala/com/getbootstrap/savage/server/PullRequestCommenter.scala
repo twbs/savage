@@ -17,7 +17,7 @@ class PullRequestCommenter extends GitHubActorWithLogging {
       val plainStatus = if (succeeded) { "**Tests passed.**" } else { "**Tests failed.**" }
 
       val commentMarkdown = s"""
-        |${plainStatus} Automated cross-browser testing via Sauce Labs and Travis CI shows that the changes in this pull request are: ${mythicalStatus}
+        |${plainStatus} Automated cross-browser testing via Sauce Labs and Travis CI shows that the JavaScript changes in this pull request are: ${mythicalStatus}
         |
         |Commit: ${commitSha.sha}
         |Build details: ${buildUrl}
