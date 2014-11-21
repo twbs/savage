@@ -12,7 +12,7 @@ class SavageWebService(
   protected val pullRequestCommenter: ActorRef,
   protected val branchDeleter: ActorRef
 ) extends ActorWithLogging with HttpService {
-  import GitHubPullRequestWebHooksDirectives.authenticatedPullRequestEvent
+  import GitHubWebHooksDirectives.{authenticatedPullRequestEvent,authenticatedIssueOrCommentEvent}
   import TravisWebHookDirectives.authenticatedTravisEvent
 
   private val settings = Settings(context.system)
@@ -34,6 +34,12 @@ class SavageWebService(
                 case "ping" => {
                   log.info("Successfully received GitHub webhook ping.")
                   complete(StatusCodes.OK)
+                }
+                case "issue_comment" => {
+                  authenticatedIssueOrCommentEvent(settings.GitHubWebHookSecretKey.toArray) { event => {
+                    pullRequestEventHandler ! event
+                    complete(StatusCodes.OK)
+                  }}
                 }
                 case "pull_request" => {
                   authenticatedPullRequestEvent(settings.GitHubWebHookSecretKey.toArray) { event =>

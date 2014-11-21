@@ -1,11 +1,12 @@
 package com.getbootstrap.savage.server
 
 import java.nio.file.Path
+import java.util.regex.Pattern
 import scala.collection.JavaConverters._
 import scala.util.{Try,Success,Failure}
 import akka.actor.ActorRef
 import org.eclipse.egit.github.core._
-import org.eclipse.egit.github.core.service.CommitService
+import org.eclipse.egit.github.core.service.{CommitService, OrganizationService, PullRequestService}
 import com.getbootstrap.savage.github._
 import com.getbootstrap.savage.github.util._
 import com.getbootstrap.savage.util.UnixFileSystemString
@@ -39,11 +40,44 @@ class PullRequestEventHandler(protected val pusher: ActorRef) extends GitHubActo
     settings.Watchlist.anyInterestingIn(paths)
   }
 
+  private def isTrusted(user: GitHubUser): Boolean = {
+    val orgService = new OrganizationService(gitHubClient)
+    settings.TrustedOrganizations.exists{ org => Try{ orgService.isPublicMember(org, user.username) }.toOption.getOrElse(false) }
+  }
+
   private def logPrInfo(msg: String)(implicit prNum: PullRequestNumber) {
     log.info(s"PR #${prNum.number} : ${msg}")
   }
 
+  private val RetryCommentRegex = ("(?i)^" + Pattern.quote(s"@${settings.BotUsername}") + "\\s+retry").r
+
   override def receive = {
+    case commentEvent: IssueOrCommentEvent => {
+      commentEvent.repository.id match {
+        case settings.MainRepoId => {
+          commentEvent.prNumber.foreach{ prNum => {
+            commentEvent.comment.foreach{ comment => {
+              if (isTrusted(comment.user)) {
+                comment.body match {
+                  case RetryCommentRegex(_*) => {
+                    val prService = new PullRequestService(gitHubClient)
+                    Try{ prService.getPullRequest(settings.MainRepoId, prNum.number) } match {
+                      case Failure(exc) => log.error(exc, s"Error getting ${prNum} for repo ${settings.MainRepoId}!")
+                      case Success(pullReq) => {
+                        log.info(s"Initiating retry of ${prNum} due to request from trusted user ${comment.user}")
+                        self ! pullReq
+                      }
+                    }
+                  }
+                  case _ => {}
+                }
+              }
+            }}
+          }}
+        }
+        case otherRepo => log.error(s"Received event from GitHub about irrelevant repository: ${otherRepo}")
+      }
+    }
     case pr: PullRequest => {
       implicit val prNum = pr.number
       val bsBase = pr.getBase
