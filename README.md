@@ -3,7 +3,7 @@ Savage
 [![Build Status](https://travis-ci.org/twbs/savage.svg?branch=master)](https://travis-ci.org/twbs/savage)
 
 Savage is a service watches for new or updated pull requests on a given GitHub repository. For each pull request, it evaluates whether the changes are "safe" (i.e. we can run a Travis CI build with them with heightened permissions without worrying about security issues) and "interesting" (i.e. would benefit from a Travis CI build with them with heightened permissions), based on which files were modified. If the pull request is "safe" and "interesting", then it initiates a Travis CI build with heightened permissions on a specified GitHub repository. When the Travis CI build completes, it posts a comment with the test results on the pull request. If the test failed, the pull requester can then revise their code to fix the problem.
-Users who are members of trusted GitHub organizations (see the `trusted-orgs` setting) can ask Savage to retry a pull request by leaving a comment on the pull request of the form: "@<username-of-savage-bot> retry" (e.g. "@twbs-savage retry")
+Users who are members of trusted GitHub organizations (see the `trusted-orgs` setting) can ask Savage to retry a pull request by leaving a comment on the pull request of the form: "@\<username-of-savage-bot> retry" (e.g. "@twbs-savage retry")
 
 Savage's original use-case is for running Sauce Labs cross-browser JS tests on pull requests via Travis CI, while keeping the Sauce Labs access credentials secure.
 
