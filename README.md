@@ -52,6 +52,8 @@ Savage accepts exactly one optional command-line argument, which is the port num
 
 When running Savage, its working directory needs to be a non-bare git repo which is a clone of the repo being monitored.
 
+The Unix user that Savage runs as needs to have an SSH key setup, and that SSH key needs to be registered in Savage's GitHub user account, so that Savage can pull-to/push-from GitHub securely via SSH.
+
 If you're using Sauce, we recommend [using a sub-account](https://saucelabs.com/sub-accounts) for Savage, to completely prevent any possibility of compromise of your main account.
 
 Other settings live in `application.conf`. In addition to the normal Akka and Spray settings, Savage offers the following settings:
