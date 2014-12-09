@@ -48,6 +48,8 @@ Using Savage involves two GitHub repos (which can both be the same repo, althoug
 
 Java 7+, [Git](http://git-scm.com/), OpenSSH, and a Unix-like OS are required to run Savage. For instructions on building Savage yourself, see [the Contributing docs](https://github.com/twbs/savage/blob/master/CONTRIBUTING.md).
 
+For step-by-step setup instructions, see [`SETUP.md`](https://github.com/twbs/savage/blob/master/SETUP.md).
+
 Savage accepts exactly one optional command-line argument, which is the port number to run its HTTP server on, e.g. `8080`. If you don't provide this argument, the default port specified in `application.conf` will be used. Once you've built the JAR, run e.g. `java -jar savage-assembly-1.0.jar 8080` (replace `8080` with whatever port number you want). Note that running on ports <= 1024 requires root privileges (not recommended) or using port mapping.
 
 When running Savage, its working directory needs to be a non-bare git repo which is a clone of the repo being monitored.
