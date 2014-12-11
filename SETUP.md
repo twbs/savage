@@ -5,7 +5,7 @@ This guide covers the current best (although not only) way to setup a Savage ins
 If you're want to run Savage in [Docker](https://www.docker.com), you might want to consult Bootstrap's [`setup_droplet.sh`](https://github.com/twbs/savage/blob/master/setup_droplet.sh) and [Dockerfile](https://github.com/twbs/savage/blob/master/Dockerfile) as references.
 
 1. For maximum security, create a [Sauce sub-account](https://saucelabs.com/sub-accounts) for use by Savage. (In the event of a security vulnerability in Savage, only the sub-account will be liable to compromise; your main account will remain secure, and you can then simply reset the credentials for the sub-account, or delete the sub-account and create a fresh sub-account.)
-2. In your project's main GitHub repo, setup the ["Travis webhook configuration"](https://github.com/twbs/savage#travis-webhook-configuration) to your `.travis.yml` . (This way, the hook configuration will be propagated when we fork the repo later. (If you want, you can remove the hook from your main repo after the fork is created.))
+2. In your project's main GitHub repo, setup the ["Travis webhook configuration"](https://github.com/twbs/savage#travis-webhook-configuration) to your `.travis.yml` . (This way, the hook configuration will be propagated when we fork the repo later.)
 3. Create a GitHub user account for Savage. (The account will be used to post GitHub comments and own a GitHub fork of the main project's repo.)
 4. While logged in as your Savage user, fork your project's main GitHub repo. This fork will be used as the *test repo* referred to in Savage's README.
 5. For convenience, you should probably add yourself or your project's team as Collaborators on the *test repo*.
