@@ -9,10 +9,13 @@ import org.eclipse.egit.github.core._
 import org.eclipse.egit.github.core.service.{CommitService, OrganizationService, PullRequestService}
 import com.getbootstrap.savage.github._
 import com.getbootstrap.savage.github.util._
+import com.getbootstrap.savage.github.commit_status.StatusForCommit
 import com.getbootstrap.savage.util.UnixFileSystemString
 
-class PullRequestEventHandler(protected val pusher: ActorRef) extends GitHubActorWithLogging {
-
+class PullRequestEventHandler(
+  protected val pusher: ActorRef,
+  protected val statusSetter: ActorRef
+) extends GitHubActorWithLogging {
   private def affectedFilesFor(repoId: RepositoryId, base: CommitSha, head: CommitSha): Try[Set[Path]] = {
     val commitService = new CommitService(gitHubClient)
     Try { commitService.compare(repoId, base.sha, head.sha) }.map { comparison =>
@@ -109,6 +112,10 @@ class PullRequestEventHandler(protected val pusher: ActorRef) extends GitHubActo
                             origin = foreignRepo,
                             number = pr.number,
                             commitSha = headSha
+                          )
+                          statusSetter ! StatusForCommit(
+                            status = commit_status.Pending("Savage has initiated its special separate Travis CI build"),
+                            commit = headSha
                           )
                         }
                         else {

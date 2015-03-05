@@ -35,10 +35,11 @@ object Boot extends App {
     // import actorSystem.dispatcher
 
     val deleter = system.actorOf(SmallestMailboxPool(3).props(Props(classOf[BranchDeleter])), "branch-deleters")
+    val statusSetters = system.actorOf(SmallestMailboxPool(3).props(Props(classOf[CommitStatusSetter])), "status-setters")
     val commenter = system.actorOf(SmallestMailboxPool(3).props(Props(classOf[PullRequestCommenter])), "gh-pr-commenters")
     val pusher = system.actorOf(Props(classOf[PullRequestPusher]), "pr-pusher")
-    val prHandlers = system.actorOf(SmallestMailboxPool(3).props(Props(classOf[PullRequestEventHandler], pusher)), "pr-handlers")
-    val webService = system.actorOf(Props(classOf[SavageWebService], prHandlers, commenter, deleter), "savage-service")
+    val prHandlers = system.actorOf(SmallestMailboxPool(3).props(Props(classOf[PullRequestEventHandler], pusher, statusSetters)), "pr-handlers")
+    val webService = system.actorOf(Props(classOf[SavageWebService], prHandlers, commenter, deleter, statusSetters), "savage-service")
 
     implicit val timeout = Timeout(15.seconds)
     IO(Http) ? Http.Bind(webService, interface = "0.0.0.0", port = port.getOrElse(settings.DefaultPort))
