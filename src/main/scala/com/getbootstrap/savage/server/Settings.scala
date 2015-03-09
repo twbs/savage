@@ -19,6 +19,7 @@ class SettingsImpl(config: Config) extends Extension {
   val GitHubWebHookSecretKey: ByteString = ByteString(config.getString("savage.github-web-hook-secret-key").utf8Bytes)
   val TravisToken: String = config.getString("savage.travis-token")
   val DefaultPort: Int = config.getInt("savage.default-port")
+  val SquelchInvalidHttpLogging: Boolean = config.getBoolean("savage.squelch-invalid-http-logging")
   val Whitelist: FilePathWhitelist = new FilePathWhitelist(config.getStringList("savage.whitelist").asScala)
   val Watchlist: FilePathWatchlist = new FilePathWatchlist(config.getStringList("savage.file-watchlist").asScala)
   val BranchPrefix: String = config.getString("savage.branch-prefix")

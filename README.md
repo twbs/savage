@@ -63,6 +63,9 @@ Other settings live in `application.conf`. In addition to the normal Akka and Sp
 savage {
     // Port to run on, if not specified via the command line
     default-port = 6060
+    // Suppress Spray's logging of malformed HTTP requests/headers?
+    // (Enable this to avoid floods in your log output when your Savage instance gets weird requests from crackers.)
+    squelch-invalid-http-logging = true
     // Full name of GitHub repo to watch for new pull requests
     github-repo-to-watch = "twbs/bootstrap"
     // Full name of GitHub repo to push test branches to

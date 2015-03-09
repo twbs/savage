@@ -29,10 +29,21 @@ object Boot extends App {
 
   run(argsPort)
 
+  def squelchInvalidHttpLogging() {
+    import org.slf4j.LoggerFactory
+    import ch.qos.logback.classic.{Logger,Level}
+
+    LoggerFactory.getLogger("spray.can.server.HttpServerConnection").asInstanceOf[Logger].setLevel(Level.ERROR)
+  }
+
   def run(port: Option[Int]) {
     implicit val system = ActorSystem("on-spray-can")
     val settings = Settings(system)
     // import actorSystem.dispatcher
+
+    if (settings.SquelchInvalidHttpLogging) {
+      squelchInvalidHttpLogging()
+    }
 
     val deleter = system.actorOf(SmallestMailboxPool(3).props(Props(classOf[BranchDeleter])), "branch-deleters")
     val statusSetters = system.actorOf(SmallestMailboxPool(3).props(Props(classOf[CommitStatusSetter])), "status-setters")
