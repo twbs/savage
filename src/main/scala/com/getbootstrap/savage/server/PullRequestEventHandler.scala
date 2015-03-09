@@ -67,7 +67,7 @@ class PullRequestEventHandler(
                     Try{ prService.getPullRequest(settings.MainRepoId, prNum.number) } match {
                       case Failure(exc) => log.error(exc, s"Error getting ${prNum} for repo ${settings.MainRepoId}!")
                       case Success(pullReq) => {
-                        log.info(s"Initiating retry of ${prNum} due to request from trusted user ${comment.user}")
+                        log.info(s"Initiating retry of ${prNum} due to request from trusted ${comment.user}")
                         self ! pullReq
                       }
                     }
