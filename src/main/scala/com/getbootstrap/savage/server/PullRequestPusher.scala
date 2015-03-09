@@ -40,7 +40,7 @@ class PullRequestPusher extends GitHubActorWithLogging {
     }
     val branchSpec = s"${commitSha.sha}:${newBranch.asRef}"
     val destRemote = settings.TestRepoId.asPushRemote
-    val success = SimpleSubprocess(Seq("git", "push", destRemote, branchSpec)).run() match {
+    val success = SimpleSubprocess(Seq("git", "push", "-f", destRemote, branchSpec)).run() match {
       case SuccessfulExit(_) => {
         log.info(s"Successfully pushed ${commitSha} from ${originRepo} to ${destRemote} as ${newBranch}")
         true
