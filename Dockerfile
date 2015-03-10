@@ -1,4 +1,4 @@
-# Written against Docker v1.2.0
+# Written against Docker v1.5.0
 FROM dockerfile/java
 MAINTAINER Chris Rebert <code@rebertia.com>
 
@@ -8,7 +8,7 @@ RUN ["apt-get", "install", "git"]
 RUN ["apt-get", "install", "openssh-client"]
 RUN ["useradd", "savage"]
 
-ADD target/scala-2.10/savage-assembly-1.0.jar /app/server.jar
+ADD target/scala-2.11/savage-assembly-1.0.jar /app/server.jar
 ADD git-repo /app/git-repo
 
 ADD ssh/id_rsa.pub /home/savage/.ssh/id_rsa.pub
