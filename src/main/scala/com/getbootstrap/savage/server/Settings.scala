@@ -18,6 +18,7 @@ class SettingsImpl(config: Config) extends Extension {
   val BotPassword: String = config.getString("savage.password")
   val GitHubWebHookSecretKey: ByteString = ByteString(config.getString("savage.github-web-hook-secret-key").utf8Bytes)
   val TravisToken: String = config.getString("savage.travis-token")
+  val UserAgent: String = config.getString("spray.can.client.user-agent-header")
   val DefaultPort: Int = config.getInt("savage.default-port")
   val SquelchInvalidHttpLogging: Boolean = config.getBoolean("savage.squelch-invalid-http-logging")
   val Whitelist: FilePathWhitelist = new FilePathWhitelist(config.getStringList("savage.whitelist").asScala)
