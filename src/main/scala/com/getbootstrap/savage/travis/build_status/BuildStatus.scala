@@ -17,6 +17,7 @@ object BuildStatus {
 sealed trait BuildStatus {
   val StatusMessage: String
   def isSuccessful: Boolean
+  override def toString: String = StatusMessage
 }
 
 // If the webhook is setup properly, we should never see a build with Pending status
