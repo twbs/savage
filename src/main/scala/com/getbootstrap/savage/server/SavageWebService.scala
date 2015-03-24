@@ -5,7 +5,8 @@ import akka.actor.ActorRef
 import spray.routing._
 import spray.http._
 import com.getbootstrap.savage.PullRequestBuildResult
-import com.getbootstrap.savage.github.{BranchDeletionRequest, PullRequestNumber, commit_status}
+import com.getbootstrap.savage.github.{BranchDeletionRequest, PullRequestNumber, commit_status, pr_action}
+import com.getbootstrap.savage.github.util._
 
 class SavageWebService(
   protected val pullRequestEventHandler: ActorRef,
@@ -44,10 +45,10 @@ class SavageWebService(
                 }
                 case "pull_request" => {
                   authenticatedPullRequestEvent(settings.GitHubWebHookSecretKey.toArray) { event =>
-                    event.getAction match {
-                      case "opened" | "synchronize" => {
+                    event.action match {
+                      case pr_action.Opened | pr_action.Synchronize => {
                         val pr = event.getPullRequest
-                        if (pr.getState == "open") {
+                        if (pr.isOpen) {
                           pullRequestEventHandler ! pr
                           complete(StatusCodes.OK)
                         }
