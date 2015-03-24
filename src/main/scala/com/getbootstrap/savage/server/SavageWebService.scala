@@ -5,7 +5,7 @@ import akka.actor.ActorRef
 import spray.routing._
 import spray.http._
 import com.getbootstrap.savage.PullRequestBuildResult
-import com.getbootstrap.savage.github.{BranchDeletionRequest, PullRequestNumber, commit_status, pr_action}
+import com.getbootstrap.savage.github.{BranchDeletionRequest, PullRequestNumber, commit_status, pr_action, event=>events}
 import com.getbootstrap.savage.github.util._
 
 class SavageWebService(
@@ -14,7 +14,7 @@ class SavageWebService(
   protected val branchDeleter: ActorRef,
   protected val statusSetter: ActorRef
 ) extends ActorWithLogging with HttpService {
-  import GitHubWebHooksDirectives.{authenticatedPullRequestEvent,authenticatedIssueOrCommentEvent}
+  import GitHubWebHooksDirectives.{gitHubEvent,authenticatedPullRequestEvent,authenticatedIssueOrCommentEvent}
   import TravisWebHookDirectives.authenticatedTravisEvent
 
   private val settings = Settings(context.system)
@@ -31,19 +31,19 @@ class SavageWebService(
       path("github") {
         pathEndOrSingleSlash {
           post {
-            headerValueByName("X-Github-Event") { githubEvent =>
-              githubEvent match {
-                case "ping" => {
+            gitHubEvent(log) { ghEvent =>
+              ghEvent match {
+                case events.Ping => {
                   log.info("Successfully received GitHub webhook ping.")
                   complete(StatusCodes.OK)
                 }
-                case "issue_comment" => {
+                case events.IssueComment => {
                   authenticatedIssueOrCommentEvent(settings.GitHubWebHookSecretKey.toArray) { event => {
                     pullRequestEventHandler ! event
                     complete(StatusCodes.OK)
                   }}
                 }
-                case "pull_request" => {
+                case events.PullRequest => {
                   authenticatedPullRequestEvent(settings.GitHubWebHookSecretKey.toArray) { event =>
                     event.action match {
                       case pr_action.Opened | pr_action.Synchronize => {

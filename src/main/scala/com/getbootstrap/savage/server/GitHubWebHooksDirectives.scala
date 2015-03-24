@@ -1,16 +1,19 @@
 package com.getbootstrap.savage.server
 
 import scala.util.{Success, Failure, Try}
+import akka.event.LoggingAdapter
 import spray.json._
 import spray.routing.{Directive1, ValidationRejection}
-import spray.routing.directives.{BasicDirectives, RouteDirectives}
+import spray.routing.directives.{BasicDirectives, RouteDirectives, HeaderDirectives}
 import org.eclipse.egit.github.core.event.PullRequestPayload
 import org.eclipse.egit.github.core.client.GsonUtils
 import com.getbootstrap.savage.github.{GitHubJsonProtocol,IssueOrCommentEvent}
+import com.getbootstrap.savage.github.event.Event
 
 trait GitHubWebHooksDirectives {
   import RouteDirectives.reject
   import BasicDirectives.provide
+  import HeaderDirectives.headerValueByName
   import HubSignatureDirectives.stringEntityMatchingHubSignature
   import GitHubJsonProtocol._
 
@@ -27,6 +30,16 @@ trait GitHubWebHooksDirectives {
       case Success(event) => provide(event)
     }
   }
+
+  def gitHubEvent(log: LoggingAdapter): Directive1[Event] = headerValueByName("X-Github-Event").flatMap{ eventName => {
+    Event(eventName) match {
+      case None => {
+        log.error(s"Received unknown GitHub event: ${eventName}")
+        reject(ValidationRejection(s"Unrecognized GitHub event: ${eventName}"))
+      }
+      case Some(event) => provide(event)
+    }
+  }}
 }
 
 object GitHubWebHooksDirectives extends GitHubWebHooksDirectives
