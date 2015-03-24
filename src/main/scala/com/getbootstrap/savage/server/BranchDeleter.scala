@@ -19,7 +19,7 @@ class BranchDeleter extends GitHubActorWithLogging {
             if (repoSha == commitSha.sha) {
               val remote = settings.TestRepoId.asPushRemote
               val process = SimpleSubprocess(Seq("git", "push", remote, ":" + branch.name))
-              log.info(s"Deleting branch ${branch} from remote ${remote}")
+              log.info(s"Deleting ${branch} from remote ${remote}")
               process.run() match {
                 case SuccessfulExit(_) => log.info(s"Successfully deleted ${branch} in ${remote}")
                 case ErrorExit(exitValue, output) => log.error(s"Error deleting ${branch} in ${remote} :\nExit code: ${exitValue}\n${output}")
