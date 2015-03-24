@@ -16,6 +16,10 @@ libraryDependencies += "org.eclipse.mylyn.github" % "org.eclipse.egit.github.cor
 
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.2"
 
+// Gson is missing when using the EGit snapshot version for some reason
+
+libraryDependencies += "com.google.code.gson" % "gson" % "2.2.2"
+
 libraryDependencies ++= {
   val akkaV = "2.3.9"
   val sprayV = "1.3.2"
