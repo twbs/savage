@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Step 0: You need to have copied the assembly JAR to savage/target/scala-2.10/savage-assembly-1.0.jar
+# Step 0: You need to have copied the assembly JAR to savage/target/scala-2.11/savage-assembly-1.0.jar
 # Step 0.1: You need to have the git repo checked out in ./git-repo
 # Step 0.2: The user's SSH public-private keys must be at ./ssh/id_rsa and ./ssh/id_rsa.pub
 
