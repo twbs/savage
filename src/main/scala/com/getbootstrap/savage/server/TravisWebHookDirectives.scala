@@ -14,9 +14,12 @@ trait TravisWebHookDirectives {
   import TravisAuthDirectives.stringEntityIfTravisAuthValid
   import TravisJsonProtocol._
 
-  def authenticatedTravisEvent(travisToken: String, repo: RepositoryId, log: LoggingAdapter): Directive1[TravisPayload] = stringEntityIfTravisAuthValid(travisToken, repo).flatMap{ entityJsonString =>
+  def authenticatedTravisEvent(travisToken: String, repo: RepositoryId, log: LoggingAdapter): Directive1[TravisPayload] = stringEntityIfTravisAuthValid(travisToken, repo, log).flatMap{ entityJsonString =>
     Try { entityJsonString.parseJson.convertTo[TravisPayload] } match {
-      case Failure(exc) => reject(ValidationRejection("JSON was either malformed or did not match expected schema!"))
+      case Failure(exc) => {
+        log.error("Received Travis request with bad JSON!")
+        reject(ValidationRejection("JSON was either malformed or did not match expected schema!"))
+      }
       case Success(payload) => provide(payload)
     }
   }

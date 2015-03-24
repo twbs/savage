@@ -90,6 +90,9 @@ class SavageWebService(
                   }
                 }
               }
+              else {
+                log.info(s"Ignoring authentic Travis event from irrelevant ${event.branchName}")
+              }
               complete(StatusCodes.OK)
             }
           }
