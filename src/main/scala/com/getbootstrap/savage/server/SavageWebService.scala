@@ -80,7 +80,6 @@ class SavageWebService(
                     } else {
                       commit_status.Failure("BUSTED: Savage cross-browser JS testing failed")
                     }
-                    log.info(s"Travis status is ${event.status} for ${prNum} at ${event.commitSha}")
                     statusSetter ! commitStatus
                     pullRequestCommenter ! PullRequestBuildResult(
                       prNum = prNum,
