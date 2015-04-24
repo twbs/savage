@@ -40,7 +40,8 @@ Using Savage involves two GitHub repos (which can both be the same repo, althoug
 * The *main repo*
   * This repo is the one receiving pull requests
   * Savage needs its GitHub web hook set up for this repo
-  * Savage does NOT need to be a Collaborator on this repo
+  * If you want Savage to set commit statuses on pull requests (see the `set-commit-status` setting), it must be a Collaborator on this repo.
+    * Otherwise, Savage does NOT need to be a Collaborator on this repo
 * The *test repo*
   * The repo that Savage will push test branches to
   * Travis CI should be set up for this repo
@@ -66,6 +67,8 @@ savage {
     // Suppress Spray's logging of malformed HTTP requests/headers?
     // (Enable this to avoid floods in your log output when your Savage instance gets weird requests from crackers.)
     squelch-invalid-http-logging = true
+    // Set statuses on commits (like Travis does)? Requires push access to the github-repo-to-watch
+    set-commit-status = true
     // Full name of GitHub repo to watch for new pull requests
     github-repo-to-watch = "twbs/bootstrap"
     // Full name of GitHub repo to push test branches to

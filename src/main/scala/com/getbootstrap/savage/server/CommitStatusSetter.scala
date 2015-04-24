@@ -16,11 +16,13 @@ class CommitStatusSetter extends GitHubActorWithLogging {
 
   override def receive = {
     case commitStatus@StatusForCommit(commit, status) => {
-      tryToSetCommitStatus(commitStatus) match {
-        case Success(createdCommitStatus) => {
-          log.info(s"Successfully created commit status with state ${status.name} for ${commit}")
+      if (settings.SetCommitStatus) {
+        tryToSetCommitStatus(commitStatus) match {
+          case Success(createdCommitStatus) => {
+            log.info(s"Successfully created commit status with state ${status.name} for ${commit}")
+          }
+          case Failure(exc) => log.error(exc, s"Error setting ${commitStatus}")
         }
-        case Failure(exc) => log.error(exc, s"Error setting ${commitStatus}")
       }
     }
   }
