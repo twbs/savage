@@ -6,6 +6,7 @@ import spray.routing._
 import spray.http._
 import com.getbootstrap.savage.PullRequestBuildResult
 import com.getbootstrap.savage.github.{BranchDeletionRequest, PullRequestNumber, commit_status, pr_action, event=>events}
+import com.getbootstrap.savage.github.commit_status.StatusForCommit
 import com.getbootstrap.savage.github.util._
 
 class SavageWebService(
@@ -80,7 +81,7 @@ class SavageWebService(
                     } else {
                       commit_status.Failure("BUSTED: Savage cross-browser JS testing failed", event.buildUrl)
                     }
-                    statusSetter ! commitStatus
+                    statusSetter ! StatusForCommit(event.commitSha, commitStatus)
                     pullRequestCommenter ! PullRequestBuildResult(
                       prNum = prNum,
                       commitSha = event.commitSha,
