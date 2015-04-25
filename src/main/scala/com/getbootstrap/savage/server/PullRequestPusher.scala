@@ -33,7 +33,7 @@ class PullRequestPusher extends GitHubActorWithLogging {
 
   def push(originRepo: RepositoryId, prNum: PullRequestNumber, commitSha: CommitSha): Boolean = {
     val newBranch = {
-      val branchName = settings.BranchPrefix + prNum.number
+      val branchName = s"${settings.BranchPrefix}${prNum.number}-${commitSha.sha}"
       Branch(branchName).getOrElse {
         throw new SecurityException(s"Generated insecure branch name: ${branchName}")
       }
