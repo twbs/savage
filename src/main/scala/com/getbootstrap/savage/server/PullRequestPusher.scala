@@ -1,12 +1,15 @@
 package com.getbootstrap.savage.server
 
+import akka.actor.ActorRef
 import org.eclipse.egit.github.core.RepositoryId
 import com.getbootstrap.savage.github._
 import com.getbootstrap.savage.github.util.RichRepositoryId
 import com.getbootstrap.savage.util.{ErrorExit, SuccessfulExit, SimpleSubprocess}
 import com.getbootstrap.savage.util.{RichPath,UnixFileSystemString}
 
-class PullRequestPusher extends GitHubActorWithLogging {
+class PullRequestPusher(
+  protected val branchDeleter: ActorRef
+) extends GitHubActorWithLogging {
   private val gitRemoteRefsDirectory = ".git/refs/remotes".asUnixPath
 
   override def receive = {
@@ -43,6 +46,7 @@ class PullRequestPusher extends GitHubActorWithLogging {
     val success = SimpleSubprocess(Seq("git", "push", "-f", destRemote, branchSpec)).run() match {
       case SuccessfulExit(_) => {
         log.info(s"Successfully pushed ${commitSha} from ${originRepo} to ${destRemote} as ${newBranch}")
+        scheduleFailsafeBranchDeletion(newBranch)
         true
       }
       case ErrorExit(exitValue, output) => {
@@ -54,5 +58,10 @@ class PullRequestPusher extends GitHubActorWithLogging {
     implicit val logger = log
     gitRemoteRefsDirectory.deleteRecursively()
     success
+  }
+
+  private def scheduleFailsafeBranchDeletion(branch: Branch) {
+    implicit val execContext = context.system.dispatcher
+    context.system.scheduler.scheduleOnce(settings.TravisTimeout, branchDeleter, branch)
   }
 }

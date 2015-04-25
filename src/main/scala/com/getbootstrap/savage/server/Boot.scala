@@ -48,7 +48,7 @@ object Boot extends App {
     val deleter = system.actorOf(SmallestMailboxPool(3).props(Props(classOf[BranchDeleter])), "branch-deleters")
     val statusSetters = system.actorOf(SmallestMailboxPool(3).props(Props(classOf[CommitStatusSetter])), "status-setters")
     val commenter = system.actorOf(SmallestMailboxPool(3).props(Props(classOf[PullRequestCommenter])), "gh-pr-commenters")
-    val pusher = system.actorOf(Props(classOf[PullRequestPusher]), "pr-pusher")
+    val pusher = system.actorOf(Props(classOf[PullRequestPusher], deleter), "pr-pusher")
     val prHandlers = system.actorOf(SmallestMailboxPool(3).props(Props(classOf[PullRequestEventHandler], pusher, statusSetters)), "pr-handlers")
     val webService = system.actorOf(Props(classOf[SavageWebService], prHandlers, commenter, deleter, statusSetters), "savage-service")
 

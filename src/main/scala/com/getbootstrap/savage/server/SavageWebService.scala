@@ -5,7 +5,7 @@ import akka.actor.ActorRef
 import spray.routing._
 import spray.http._
 import com.getbootstrap.savage.PullRequestBuildResult
-import com.getbootstrap.savage.github.{BranchDeletionRequest, PullRequestNumber, commit_status, pr_action, event=>events}
+import com.getbootstrap.savage.github.{PullRequestNumber, commit_status, pr_action, event=>events}
 import com.getbootstrap.savage.github.commit_status.StatusForCommit
 import com.getbootstrap.savage.github.util._
 
@@ -75,7 +75,7 @@ class SavageWebService(
                 Try { Integer.parseInt(event.branchName.name.stripPrefix(settings.BranchPrefix)) }.flatMap{ intStr => Try{ PullRequestNumber(intStr).get } } match {
                   case Failure(exc) => log.error(exc, s"Invalid Savage branch name from Travis event: ${event.branchName}")
                   case Success(prNum) => {
-                    branchDeleter ! BranchDeletionRequest(event.branchName, event.commitSha)
+                    branchDeleter ! event.branchName
                     val commitStatus = if (event.status.isSuccessful) {
                       commit_status.Success("CONFIRMED: Savage cross-browser JS tests passed", event.buildUrl)
                     } else {

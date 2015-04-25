@@ -6,6 +6,7 @@ import java.io.{IOException, InputStream}
 import java.util.Scanner
 import akka.event.LoggingAdapter
 import scala.util.Try
+import com.typesafe.config.Config
 
 package object util {
   val utf8Name = "UTF-8"
@@ -66,5 +67,12 @@ package object util {
         case exc:IOException => log.error(exc, s"Error while deleting ${path}")
       }
     }
+  }
+
+  implicit class RichConfig(config: Config) {
+    import java.util.concurrent.TimeUnit
+    import scala.concurrent.duration.FiniteDuration
+
+    def getFiniteDuration(path: String): FiniteDuration = FiniteDuration(config.getDuration(path, TimeUnit.SECONDS), TimeUnit.SECONDS)
   }
 }
