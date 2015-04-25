@@ -19,7 +19,7 @@ class CommitStatusSetter extends GitHubActorWithLogging {
       if (settings.SetCommitStatus) {
         tryToSetCommitStatus(commitStatus) match {
           case Success(createdCommitStatus) => {
-            log.info(s"Successfully created commit status with state ${status.name} for ${commit}")
+            log.info(s"Successfully created commit status with state ${status.name} and URL ${createdCommitStatus.getUrl} for ${commit}")
           }
           case Failure(exc) => log.error(exc, s"Error setting ${commitStatus}")
         }
