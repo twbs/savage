@@ -70,8 +70,8 @@ class SavageWebService(
         pathEndOrSingleSlash {
           post {
             authenticatedTravisEvent(travisToken = settings.TravisToken, repo = settings.TestRepoId, log = log) { event =>
-              event.branchName match {
-                case branch@SavageBranch(prNum, _) => {
+              SavageBranch(event.branchName) match {
+                case Some(branch@SavageBranch(prNum, _)) => {
                   branchDeleter ! branch
                   val commitStatus = if (event.status.isSuccessful) {
                     commit_status.Success("CONFIRMED: Savage cross-browser JS tests passed", event.buildUrl)
@@ -86,7 +86,7 @@ class SavageWebService(
                     succeeded = event.status.isSuccessful
                   )
                 }
-                case badBranch => log.info(s"Ignoring authentic Travis event from irrelevant or invalid ${badBranch}")
+                case None => log.info(s"Ignoring authentic Travis event from irrelevant or invalid ${event.branchName}")
               }
               complete(StatusCodes.OK)
             }
