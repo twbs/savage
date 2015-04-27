@@ -9,6 +9,7 @@ object PullRequestNumber {
       None
     }
   }
+  def unapply(number: Int): Option[PullRequestNumber] = PullRequestNumber(number)
 }
 class PullRequestNumber private(val number: Int) extends AnyVal {
   override def toString = s"PullRequestNumber(${number})"

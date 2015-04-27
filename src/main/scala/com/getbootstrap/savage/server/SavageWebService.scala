@@ -1,11 +1,10 @@
 package com.getbootstrap.savage.server
 
-import scala.util.{Try,Success,Failure}
 import akka.actor.ActorRef
 import spray.routing._
 import spray.http._
 import com.getbootstrap.savage.PullRequestBuildResult
-import com.getbootstrap.savage.github.{PullRequestNumber, commit_status, pr_action, event=>events}
+import com.getbootstrap.savage.github.{SavageBranch, commit_status, pr_action, event => events}
 import com.getbootstrap.savage.github.commit_status.StatusForCommit
 import com.getbootstrap.savage.github.util._
 
@@ -18,7 +17,7 @@ class SavageWebService(
   import GitHubWebHooksDirectives.{gitHubEvent,authenticatedPullRequestEvent,authenticatedIssueOrCommentEvent}
   import TravisWebHookDirectives.authenticatedTravisEvent
 
-  private val settings = Settings(context.system)
+  private implicit val settings = Settings(context.system)
   override def actorRefFactory = context
   override def receive = runRoute(theOnlyRoute)
 
@@ -71,28 +70,23 @@ class SavageWebService(
         pathEndOrSingleSlash {
           post {
             authenticatedTravisEvent(travisToken = settings.TravisToken, repo = settings.TestRepoId, log = log) { event =>
-              if (event.branchName.name.startsWith(settings.BranchPrefix)) {
-                Try { Integer.parseInt(event.branchName.name.stripPrefix(settings.BranchPrefix)) }.flatMap{ intStr => Try{ PullRequestNumber(intStr).get } } match {
-                  case Failure(exc) => log.error(exc, s"Invalid Savage branch name from Travis event: ${event.branchName}")
-                  case Success(prNum) => {
-                    branchDeleter ! event.branchName
-                    val commitStatus = if (event.status.isSuccessful) {
-                      commit_status.Success("CONFIRMED: Savage cross-browser JS tests passed", event.buildUrl)
-                    } else {
-                      commit_status.Failure("BUSTED: Savage cross-browser JS tests failed", event.buildUrl)
-                    }
-                    statusSetter ! StatusForCommit(event.commitSha, commitStatus)
-                    pullRequestCommenter ! PullRequestBuildResult(
-                      prNum = prNum,
-                      commitSha = event.commitSha,
-                      buildUrl = event.buildUrl,
-                      succeeded = event.status.isSuccessful
-                    )
+              event.branchName match {
+                case branch@SavageBranch(prNum, _) => {
+                  branchDeleter ! branch
+                  val commitStatus = if (event.status.isSuccessful) {
+                    commit_status.Success("CONFIRMED: Savage cross-browser JS tests passed", event.buildUrl)
+                  } else {
+                    commit_status.Failure("BUSTED: Savage cross-browser JS tests failed", event.buildUrl)
                   }
+                  statusSetter ! StatusForCommit(event.commitSha, commitStatus)
+                  pullRequestCommenter ! PullRequestBuildResult(
+                    prNum = prNum,
+                    commitSha = event.commitSha,
+                    buildUrl = event.buildUrl,
+                    succeeded = event.status.isSuccessful
+                  )
                 }
-              }
-              else {
-                log.info(s"Ignoring authentic Travis event from irrelevant ${event.branchName}")
+                case badBranch => log.info(s"Ignoring authentic Travis event from irrelevant or invalid ${badBranch}")
               }
               complete(StatusCodes.OK)
             }

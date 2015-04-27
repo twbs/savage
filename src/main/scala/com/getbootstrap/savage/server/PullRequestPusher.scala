@@ -35,13 +35,8 @@ class PullRequestPusher(
   }
 
   def push(originRepo: RepositoryId, prNum: PullRequestNumber, commitSha: CommitSha): Boolean = {
-    val newBranch = {
-      val branchName = s"${settings.BranchPrefix}${prNum.number}-${commitSha.sha}"
-      Branch(branchName).getOrElse {
-        throw new SecurityException(s"Generated insecure branch name: ${branchName}")
-      }
-    }
-    val branchSpec = s"${commitSha.sha}:${newBranch.asRef}"
+    val newBranch = SavageBranch(prNum, commitSha)
+    val branchSpec = s"${commitSha.sha}:${newBranch.branch.asRef}"
     val destRemote = settings.TestRepoId.asPushRemote
     val success = SimpleSubprocess(Seq("git", "push", "-f", destRemote, branchSpec)).run() match {
       case SuccessfulExit(_) => {
@@ -60,7 +55,7 @@ class PullRequestPusher(
     success
   }
 
-  private def scheduleFailsafeBranchDeletion(branch: Branch) {
+  private def scheduleFailsafeBranchDeletion(branch: SavageBranch) {
     implicit val execContext = context.system.dispatcher
     context.system.scheduler.scheduleOnce(settings.TravisTimeout, branchDeleter, branch)
   }

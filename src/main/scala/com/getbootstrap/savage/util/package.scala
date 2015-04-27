@@ -20,6 +20,17 @@ package object util {
     def utf8String: Try[String] = Try { new String(bytes, utf8) }
   }
 
+  implicit class PrefixedString(str: String) {
+    def unprefix(prefix: String): Option[String] = {
+      if (str.startsWith(prefix)) {
+        Some(str.stripPrefix(prefix))
+      }
+      else {
+        None
+      }
+    }
+  }
+
   private object UnixFileSystemString {
     private lazy val unixFileSystem: FileSystem = {
       // get a Unix-y FileSystem, or fail hard

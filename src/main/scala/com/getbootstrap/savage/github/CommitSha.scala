@@ -8,6 +8,7 @@ object CommitSha {
       case _ => None
     }
   }
+  def unapply(sha: String): Option[CommitSha] = CommitSha(sha)
 }
 
 class CommitSha private(val sha: String) extends AnyVal {
