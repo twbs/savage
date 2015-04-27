@@ -143,3 +143,4 @@ We all stand on the shoulders of giants and get by with a little help from our f
 ## See also
 * [LMVTFY](https://github.com/cvrebert/lmvtfy), Savage's sister bot who does HTML validation
 * [Rorschach](https://github.com/twbs/rorschach), Savage's sister bot who sanity-checks Bootstrap pull requests
+* [NO CARRIER](https://github.com/twbs/no-carrier), Savage's sister bot who closes old abandoned issues
