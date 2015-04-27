@@ -52,7 +52,7 @@ class PullRequestEventHandler(
     log.info(s"PR #${prNum.number} : ${msg}")
   }
 
-  private val RetryCommentRegex = ("(?i)^" + Pattern.quote(s"@${settings.BotUsername}") + "\\s+retry").r
+  private val RetryCommentRegex = ("(?i)^" + Pattern.quote(s"@${settings.BotUsername}") + "\\s+retry\\b.*").r
 
   override def receive = {
     case commentEvent: IssueOrCommentEvent => {
