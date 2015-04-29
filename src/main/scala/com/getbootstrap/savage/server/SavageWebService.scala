@@ -73,6 +73,7 @@ class SavageWebService(
               SavageBranch(event.branchName) match {
                 case Some(branch@SavageBranch(prNum, _)) => {
                   branchDeleter ! branch
+                  log.info(s"Told ${branchDeleter} to delete ${branch}")
                   val commitStatus = if (event.status.isSuccessful) {
                     commit_status.Success("CONFIRMED: Savage cross-browser JS tests passed", event.buildUrl)
                   } else {
