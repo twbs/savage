@@ -43,7 +43,7 @@ trait TravisAuthDirectives {
         }
       }
       else {
-        log.error("Received Travis request with incorrect hash!")
+        log.warning("Received Travis request with incorrect hash!")
         reject(ValidationRejection("Incorrect SHA-256 hash"))
       }
     }
