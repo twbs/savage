@@ -31,6 +31,7 @@ By automating the process of initiating Travis-based Sauce tests and posting the
 
 ## Used by
 * [Bootstrap](https://github.com/twbs/bootstrap); see [@twbs-savage](https://github.com/twbs-savage)
+* [Video.js](http://www.videojs.com/); see [@pam](https://github.com/pam)
 
 ## DISCLAIMER
 The current authors are not security experts and this project has not been subjected to a third-party security audit.
