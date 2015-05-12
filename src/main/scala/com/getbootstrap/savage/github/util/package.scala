@@ -5,7 +5,7 @@ import org.eclipse.egit.github.core.event.PullRequestPayload
 import com.getbootstrap.savage.github.pr_action.PullRequestAction
 
 package object util {
-  private val SafeRepoRegex = "^[0-9a-zA-Z_-]+/[0-9a-zA-Z_-]+$".r
+  private val SafeRepoRegex = "^[0-9a-zA-Z_.-]+/[0-9a-zA-Z_.-]+$".r
 
   implicit class RichRepository(repo: Repository) {
     def repositoryId: Option[RepositoryId] = {
