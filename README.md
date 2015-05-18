@@ -1,6 +1,7 @@
 Savage
 ======
 [![Build Status](https://travis-ci.org/twbs/savage.svg?branch=master)](https://travis-ci.org/twbs/savage)
+[![MIT License](https://img.shields.io/github/license/twbs/savage.svg)](https://github.com/twbs/savage/blob/master/LICENSE.txt)
 
 Savage is a service watches for new or updated pull requests on a given GitHub repository. For each pull request, it evaluates whether the changes are "safe" (i.e. we can run a Travis CI build with them with heightened permissions without worrying about security issues) and "interesting" (i.e. would benefit from a Travis CI build with them with heightened permissions), based on which files were modified. If the pull request is "safe" and "interesting", then it initiates a Travis CI build with heightened permissions on a specified GitHub repository. When the Travis CI build completes, it posts a comment ([like this one](https://github.com/twbs/bootstrap/pull/15178#issuecomment-63756231)) with the test results on the pull request. If the test failed, the pull requester can then revise their code to fix the problem.
 Users who are members of trusted GitHub organizations (see the `trusted-orgs` setting) can ask Savage to retry a pull request by leaving a comment on the pull request of the form: "@\<username-of-savage-bot> retry" (e.g. "@twbs-savage retry")
@@ -135,6 +136,9 @@ notifications:
   webhooks:
     - http://your-domain.example/savage/travis
 ```
+
+## License
+Savage is released under the [MIT License](https://github.com/twbs/savage/blob/master/LICENSE.txt).
 
 ## Acknowledgments
 We all stand on the shoulders of giants and get by with a little help from our friends. Savage is written in [Scala](http://www.scala-lang.org) and built on top of:
