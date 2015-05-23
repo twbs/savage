@@ -1,6 +1,7 @@
 Savage
 ======
 [![Build Status](https://travis-ci.org/twbs/savage.svg?branch=master)](https://travis-ci.org/twbs/savage)
+![Development Status :: 4 - Beta](https://img.shields.io/badge/maturity-beta-yellowgreen.svg "Development Status :: 4 - Beta")
 [![MIT License](https://img.shields.io/github/license/twbs/savage.svg)](https://github.com/twbs/savage/blob/master/LICENSE.txt)
 
 Savage is a service watches for new or updated pull requests on a given GitHub repository. For each pull request, it evaluates whether the changes are "safe" (i.e. we can run a Travis CI build with them with heightened permissions without worrying about security issues) and "interesting" (i.e. would benefit from a Travis CI build with them with heightened permissions), based on which files were modified. If the pull request is "safe" and "interesting", then it initiates a Travis CI build with heightened permissions on a specified GitHub repository. When the Travis CI build completes, it posts a comment ([like this one](https://github.com/twbs/bootstrap/pull/15178#issuecomment-63756231)) with the test results on the pull request. If the test failed, the pull requester can then revise their code to fix the problem.
