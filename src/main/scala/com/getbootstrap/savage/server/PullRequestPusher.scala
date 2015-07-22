@@ -21,6 +21,7 @@ class PullRequestPusher(
   }
 
   def pull(originRepo: RepositoryId): Boolean = {
+    deleteAllRemoteRefs()
     // clobberingly fetch all branch heads into a dummy remote
     SimpleSubprocess(Seq("git", "fetch", "--no-tags", "--recurse-submodules=no", originRepo.asPullRemote, "+refs/heads/*:refs/remotes/scratch/*")).run() match {
       case SuccessfulExit(_) => {
@@ -49,10 +50,13 @@ class PullRequestPusher(
         false
       }
     }
-    // delete all remote refs
+    deleteAllRemoteRefs()
+    success
+  }
+
+  private def deleteAllRemoteRefs() {
     implicit val logger = log
     gitRemoteRefsDirectory.deleteRecursively()
-    success
   }
 
   private def scheduleFailsafeBranchDeletion(branch: SavageBranch) {
