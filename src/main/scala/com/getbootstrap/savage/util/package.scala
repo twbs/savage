@@ -75,6 +75,9 @@ package object util {
         java.nio.file.Files.walkFileTree(path, new DeleterFileVisitor(log))
       }
       catch {
+        case nsfe:java.nio.file.NoSuchFileException => {
+          // file/directory is already nonexistent
+        }
         case exc:IOException => log.error(exc, s"Error while deleting ${path}")
       }
     }
