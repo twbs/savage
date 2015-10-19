@@ -89,48 +89,52 @@ class PullRequestEventHandler(
       destinationRepo match {
         case None => log.error(s"Received event from GitHub about irrelevant repository with unsafe name")
         case Some(settings.MainRepoId) => {
-          val destBranch = bsBase.getRef
-          destBranch match {
-            case "master" => {
-              prHead.getRepo.repositoryId match {
-                case None => log.error(s"Received event from GitHub about repository with unsafe name")
-                case Some(settings.MainRepoId) if settings.IgnoreBranchesFromMainRepo => log.info("Ignoring PR whose branch is from the main repo, per settings.")
-                case Some(foreignRepo) => {
-                  val baseSha = bsBase.commitSha
-                  val headSha = prHead.commitSha
+          bsBase.branch match {
+            case None => logPrInfo(s"Ignoring since PR targets the unsafely-named ${bsBase.getRef} branch")
+            case Some(destBranch) => {
+              if (settings.AllowedBaseBranches.contains(destBranch)) {
+                prHead.getRepo.repositoryId match {
+                  case None => log.error(s"Received event from GitHub about repository with unsafe name")
+                  case Some(settings.MainRepoId) if settings.IgnoreBranchesFromMainRepo => log.info("Ignoring PR whose branch is from the main repo, per settings.")
+                  case Some(foreignRepo) => {
+                    val baseSha = bsBase.commitSha
+                    val headSha = prHead.commitSha
 
-                  affectedFilesFor(foreignRepo, baseSha, headSha) match {
-                    case Failure(exc) => {
-                      log.error(exc, s"Could not get affected files for commits ${baseSha}...${headSha} for ${foreignRepo}")
-                    }
-                    case Success(affectedFiles) => {
-                      log.debug("Files affected by {}: {}", prNum, affectedFiles)
-                      if (areSafe(affectedFiles)) {
-                        if (areInteresting(affectedFiles)) {
-                          logPrInfo(s"Requesting build for safe & interesting PR")
-                          pusher ! PullRequestPushRequest(
-                            origin = foreignRepo,
-                            number = pr.number,
-                            commitSha = headSha
-                          )
-                          statusSetter ! StatusForCommit(
-                            status = commit_status.Pending("Savage has initiated its special separate Travis CI build"),
-                            commit = headSha
-                          )
+                    affectedFilesFor(foreignRepo, baseSha, headSha) match {
+                      case Failure(exc) => {
+                        log.error(exc, s"Could not get affected files for commits ${baseSha}...${headSha} for ${foreignRepo}")
+                      }
+                      case Success(affectedFiles) => {
+                        log.debug("Files affected by {}: {}", prNum, affectedFiles)
+                        if (areSafe(affectedFiles)) {
+                          if (areInteresting(affectedFiles)) {
+                            logPrInfo(s"Requesting build for safe & interesting PR")
+                            pusher ! PullRequestPushRequest(
+                              origin = foreignRepo,
+                              number = pr.number,
+                              commitSha = headSha
+                            )
+                            statusSetter ! StatusForCommit(
+                              status = commit_status.Pending("Savage has initiated its special separate Travis CI build"),
+                              commit = headSha
+                            )
+                          }
+                          else {
+                            logPrInfo(s"Ignoring PR with no interesting file changes")
+                          }
                         }
                         else {
-                          logPrInfo(s"Ignoring PR with no interesting file changes")
+                          logPrInfo(s"Ignoring PR with unsafe file changes")
                         }
-                      }
-                      else {
-                        logPrInfo(s"Ignoring PR with unsafe file changes")
                       }
                     }
                   }
                 }
               }
+              else {
+                logPrInfo(s"Ignoring since PR targets the ${destBranch} branch")
+              }
             }
-            case _ => logPrInfo(s"Ignoring since PR targets the ${destBranch} branch")
           }
         }
         case Some(otherRepo) => log.error(s"Received event from GitHub about irrelevant repository: ${otherRepo}")

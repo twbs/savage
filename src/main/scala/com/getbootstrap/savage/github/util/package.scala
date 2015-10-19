@@ -18,6 +18,7 @@ package object util {
   }
   implicit class RichPullRequestMarker(marker: PullRequestMarker) {
     def commitSha: CommitSha = CommitSha(marker.getSha).getOrElse{ throw new IllegalStateException(s"Invalid commit SHA: ${marker.getSha}") }
+    def branch: Option[Branch] = Branch(marker.getRef)
   }
   implicit class RichCommitFile(file: CommitFile) {
 
