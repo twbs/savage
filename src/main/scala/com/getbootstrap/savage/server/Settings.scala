@@ -10,6 +10,7 @@ import akka.actor.ExtensionIdProvider
 import akka.actor.ExtendedActorSystem
 import akka.util.ByteString
 import org.eclipse.egit.github.core.RepositoryId
+import com.getbootstrap.savage.github.Branch
 import com.getbootstrap.savage.util.{FilePathWhitelist,FilePathWatchlist,Utf8String,RichConfig}
 
 class SettingsImpl(config: Config) extends Extension {
@@ -26,6 +27,7 @@ class SettingsImpl(config: Config) extends Extension {
   val Watchlist: FilePathWatchlist = new FilePathWatchlist(config.getStringList("savage.file-watchlist").asScala)
   val BranchPrefix: String = config.getString("savage.branch-prefix")
   val IgnoreBranchesFromMainRepo: Boolean = config.getBoolean("savage.ignore-branches-from-watched-repo")
+  val AllowedBaseBranches: Set[Branch] = config.getStringList("savage.allowed-base-branches").asScala.flatMap{ Branch(_) }.toSet
   val TrustedOrganizations: Set[String] = config.getStringList("savage.trusted-orgs").asScala.toSet
   val SetCommitStatus: Boolean = config.getBoolean("savage.set-commit-status")
   val TravisTimeout: FiniteDuration = config.getFiniteDuration("savage.travis-timeout")
