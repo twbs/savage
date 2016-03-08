@@ -26,7 +26,9 @@ We thank you again for helping ensure the security of Savage by responsibly repo
 [GitHub]  <<<(Request details about the PR using the PR's HEAD commit's SHA)<<<  [Savage]
 [GitHub]  >>>(Response with details about the PR)>>>  [Savage]
 * Savage checks list of files modified by the PR against the whitelist
-  * If any files are outside of the whitelist, stop further processing.
+  * If any files are outside of the whitelist, stop further processing,
+      unless the user submitting the PR is trusted (by virtue of being a public member of a GitHub organization
+      in the list defined by the `savage.trusted-orgs` setting)
 
 [GitHub]  <<<(Request for Git data for the PR's HEAD commit via its SHA)<<<  [Savage]
 [GitHub]  >>>(Response with Git data for the PR's HEAD commit)>>>  [Savage]

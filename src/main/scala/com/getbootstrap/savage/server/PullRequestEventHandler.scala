@@ -85,6 +85,7 @@ class PullRequestEventHandler(
       implicit val prNum = pr.number
       val bsBase = pr.getBase
       val prHead = pr.getHead
+      val prUser = pr.getUser.username
       val destinationRepo = bsBase.getRepo.repositoryId
       destinationRepo match {
         case None => log.error(s"Received event from GitHub about irrelevant repository with unsafe name")
@@ -106,7 +107,7 @@ class PullRequestEventHandler(
                       }
                       case Success(affectedFiles) => {
                         log.debug("Files affected by {}: {}", prNum, affectedFiles)
-                        if (areSafe(affectedFiles)) {
+                        if (isTrusted(prUser) || areSafe(affectedFiles)) {
                           if (areInteresting(affectedFiles)) {
                             logPrInfo(s"Requesting build for safe & interesting PR")
                             pusher ! PullRequestPushRequest(
