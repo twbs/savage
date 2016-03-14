@@ -35,4 +35,7 @@ package object util {
   implicit class RichPullRequestPayload(val payload: PullRequestPayload) extends AnyVal {
     def action: PullRequestAction = PullRequestAction(payload.getAction).get
   }
+  implicit class RichUser(val user: User) extends AnyVal {
+    def username: GitHubUser = GitHubUser(user.getLogin)
+  }
 }
