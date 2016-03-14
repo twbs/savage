@@ -12,15 +12,15 @@ package object util {
   val utf8Name = "UTF-8"
   private val utf8 = Charset.forName(utf8Name)
 
-  implicit class Utf8String(str: String) {
+  implicit class Utf8String(val str: String) extends AnyVal {
     def utf8Bytes: Array[Byte] = str.getBytes(utf8)
   }
 
-  implicit class Utf8ByteArray(bytes: Array[Byte]) {
+  implicit class Utf8ByteArray(val bytes: Array[Byte]) extends AnyVal {
     def utf8String: Try[String] = Try { new String(bytes, utf8) }
   }
 
-  implicit class PrefixedString(str: String) {
+  implicit class PrefixedString(val str: String) extends AnyVal {
     def unprefix(prefix: String): Option[String] = {
       if (str.startsWith(prefix)) {
         Some(str.stripPrefix(prefix))
@@ -44,12 +44,12 @@ package object util {
       }
     }
   }
-  implicit class UnixFileSystemString(str: String) {
+  implicit class UnixFileSystemString(val str: String) extends AnyVal {
     def asUnixGlob = UnixFileSystemString.unixFileSystem.getPathMatcher("glob:" + str)
     def asUnixPath = UnixFileSystemString.unixFileSystem.getPath(str)
   }
 
-  implicit class RichInputStream(stream: InputStream) {
+  implicit class RichInputStream(val stream: InputStream) extends AnyVal {
     def readUntilEofAsSingleUtf8String: String = {
       val scanner = new Scanner(stream, utf8Name).useDelimiter("\\A")
       val string = if (scanner.hasNext) {
@@ -63,12 +63,12 @@ package object util {
     }
   }
 
-  implicit class HexByteArray(array: Array[Byte]) {
+  implicit class HexByteArray(val array: Array[Byte]) extends AnyVal {
     import javax.xml.bind.DatatypeConverter
     def asHexBytes: String = DatatypeConverter.printHexBinary(array).toLowerCase
   }
 
-  implicit class RichPath(path: Path) {
+  implicit class RichPath(val path: Path) extends AnyVal {
     @throws[SecurityException]
     def deleteRecursively()(implicit log: LoggingAdapter) {
       try {
@@ -83,7 +83,7 @@ package object util {
     }
   }
 
-  implicit class RichConfig(config: Config) {
+  implicit class RichConfig(val config: Config) extends AnyVal {
     import java.util.concurrent.TimeUnit
     import scala.concurrent.duration.FiniteDuration
 
