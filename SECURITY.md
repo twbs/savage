@@ -5,7 +5,7 @@ The current author are not security experts and this project has not been subjec
 
 The security of Savage is important to us. We encourage you to report security problems to us responsibly.
 
-Please report all security bugs to `savage {AT} rebertia [DOT] com`. We aim to respond (with at least an acknowledgment) within one business day. We will keep you updated on the bug's status as we work towards resolving it.
+Please report all security bugs to `savage {AT} chrisrebert [DOT] com`. We aim to respond (with at least an acknowledgment) within one business day. We will keep you updated on the bug's status as we work towards resolving it.
 
 We will disclose a problem to the public once it has been confirmed and a fix has been made available. At that point, you will be credited for your discovery in the documentation, in the release announcements, and (if applicable) in the code itself.
 
