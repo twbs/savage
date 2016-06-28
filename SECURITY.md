@@ -1,5 +1,7 @@
 ## DISCLAIMER
-The current author are not security experts and this project has not been subjected to a third-party security audit.
+The current author(s) are not security experts and this project has not been subjected to a third-party security audit.
+
+USE AT YOUR OWN RISK. Caveat emptor.
 
 ## Responsible disclosure; Security contact info
 
@@ -68,7 +70,7 @@ Out of scope per our assumptions:
 * Compromise of GitHub
 * Compromise of Travis CI API
 * Compromise of the machine on which Savage resides
-* Compromise of out outbound communications with GitHub
+* Compromise of our outbound communications with GitHub
 * Allowing modification of a sensitive file due to incorrect whitelist settings
 
 Within scope:
