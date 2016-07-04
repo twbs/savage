@@ -1,17 +1,18 @@
 package com.getbootstrap.savage.github.pr_action
 
 object PullRequestAction {
-  def apply(name: String): Option[PullRequestAction] = {
+  def apply(name: String): PullRequestAction = {
     name match {
-      case Assigned.Name => Some(Assigned)
-      case Unassigned.Name => Some(Unassigned)
-      case Labeled.Name => Some(Labeled)
-      case Unlabeled.Name => Some(Unlabeled)
-      case Opened.Name => Some(Opened)
-      case Closed.Name => Some(Closed)
-      case Reopened.Name => Some(Reopened)
-      case Synchronize.Name => Some(Synchronize)
-      case _ => None
+      case Assigned.Name => Assigned
+      case Unassigned.Name => Unassigned
+      case Labeled.Name => Labeled
+      case Unlabeled.Name => Unlabeled
+      case Opened.Name => Opened
+      case Closed.Name => Closed
+      case Reopened.Name => Reopened
+      case Synchronize.Name => Synchronize
+      case Edited.Name => Edited
+      case _ => Unknown(name)
     }
   }
 }
@@ -42,3 +43,7 @@ object Reopened extends PullRequestAction {
 object Synchronize extends PullRequestAction {
   override val Name = "synchronize"
 }
+object Edited extends PullRequestAction {
+  override val Name = "edited"
+}
+case class Unknown(Name: String) extends PullRequestAction
