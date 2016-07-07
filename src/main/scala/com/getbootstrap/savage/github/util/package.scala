@@ -33,7 +33,7 @@ package object util {
     def asPullRemote: String = s"https://github.com/${repoId.generateId}.git"
   }
   implicit class RichPullRequestPayload(val payload: PullRequestPayload) extends AnyVal {
-    def action: PullRequestAction = PullRequestAction(payload.getAction).get
+    def action: PullRequestAction = PullRequestAction(payload.getAction)
   }
   implicit class RichUser(val user: User) extends AnyVal {
     def username: GitHubUser = GitHubUser(user.getLogin)
