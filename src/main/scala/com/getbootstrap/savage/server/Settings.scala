@@ -30,6 +30,7 @@ class SettingsImpl(config: Config) extends Extension {
   val TrustedOrganizations: Set[String] = config.getStringList("savage.trusted-orgs").asScala.toSet
   val SetCommitStatus: Boolean = config.getBoolean("savage.set-commit-status")
   val TravisTimeout: FiniteDuration = config.getFiniteDuration("savage.travis-timeout")
+  val ShowPreviewUrls: Boolean = config.getBoolean("savage.show-preview-urls")
 }
 object Settings extends ExtensionId[SettingsImpl] with ExtensionIdProvider {
   override def lookup() = Settings
