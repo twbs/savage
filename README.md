@@ -81,8 +81,6 @@ savage {
     github-repo-to-watch = "twbs/bootstrap"
     // Full name of GitHub repo to push test branches to
     github-test-repo = "twbs/bootstrap-tests"
-    // Ignore pull requests whose branch is from the watched repo (and is thus from a project team member)
-    ignore-branches-from-watched-repo = true
     // Pull requests must target one of these branches in the watched repo
     allowed-base-branches = [ "master" ]
     // List of GitHub organization names whose public members Savage should trust to authorize retries of builds
