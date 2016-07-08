@@ -3,7 +3,7 @@ package com.getbootstrap.savage.github.commit_status
 import org.eclipse.egit.github.core.{CommitStatus => RawCommitStatus}
 
 object Status {
-  private val context = "continuous-integration/savage"
+  private val context = "savage"
 }
 trait Status {
   def description: String
