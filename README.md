@@ -77,6 +77,10 @@ savage {
     //   pushing the branch to GitHub, Savage will assume something went wrong and delete the branch to
     //   keep the test repo's branches tidy.
     travis-timeout = 2 hours
+    // Include a link to the "preview URL" of the PR in the GitHub comment?
+    //   Probably only makes sense if you're Bootstrap.
+    //   Otherwise, you'll need to edit the hardcoded URL template string.
+    show-preview-urls = false
     // Full name of GitHub repo to watch for new pull requests
     github-repo-to-watch = "twbs/bootstrap"
     // Full name of GitHub repo to push test branches to
