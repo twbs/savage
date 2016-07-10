@@ -15,7 +15,7 @@ class PullRequestCommenter extends GitHubActorWithLogging {
     case PullRequestBuildResult(prNum, commitSha, buildUrl, succeeded) => {
       val mythicalStatus = if (succeeded) { "**CONFIRMED**" } else { "**BUSTED**" }
       val plainStatus = if (succeeded) { "**Tests passed.**" } else { "**Tests failed.**" }
-      val previewInfo = if (settings.ShowPreviewUrls) { "Docs preview: http://preview.twbsapps.com/c/${commitSha.sha}" } else { "" }
+      val previewInfo = if (settings.ShowPreviewUrls) { s"Docs preview: http://preview.twbsapps.com/c/${commitSha.sha}" } else { "" }
 
       val commentMarkdown = s"""
         |${plainStatus} Automated cross-browser testing via Sauce Labs and Travis CI shows that the JavaScript changes in this pull request are: ${mythicalStatus}
