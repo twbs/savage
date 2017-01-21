@@ -17,7 +17,7 @@ libraryDependencies += "org.eclipse.mylyn.github" % "org.eclipse.egit.github.cor
 // egit-github needs Gson, but doesn't explicitly require it
 libraryDependencies += "com.google.code.gson" % "gson" % "2.3.1"
 
-libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.2"
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.9"
 
 libraryDependencies ++= {
   val akkaV = "2.3.9"
