@@ -21,7 +21,7 @@ libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.9"
 
 libraryDependencies ++= {
   val akkaV = "2.3.9"
-  val sprayV = "1.3.2"
+  val sprayV = "1.3.4"
   Seq(
     "io.spray"            %%  "spray-can"     % sprayV,
     "io.spray"            %%  "spray-routing" % sprayV,
