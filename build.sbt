@@ -15,7 +15,7 @@ resolvers += "Eclipse Foundation Snapshots" at "https://repo.eclipse.org/content
 libraryDependencies += "org.eclipse.mylyn.github" % "org.eclipse.egit.github.core" % "4.6.0.201612231935-r"
 
 // egit-github needs Gson, but doesn't explicitly require it
-libraryDependencies += "com.google.code.gson" % "gson" % "2.3.1"
+libraryDependencies += "com.google.code.gson" % "gson" % "2.8.0"
 
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.9"
 
