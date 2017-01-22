@@ -19,6 +19,9 @@ libraryDependencies += "com.google.code.gson" % "gson" % "2.8.0"
 
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.9"
 
+// For reading PEM ("-----BEGIN PUBLIC KEY-----"), which Travis's API uses for its public key.
+libraryDependencies += "org.bouncycastle" % "bcpkix-jdk15on" % "1.56"
+
 libraryDependencies ++= {
   val akkaV = "2.3.16"
   val sprayV = "1.3.4"

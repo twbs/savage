@@ -1,0 +1,9 @@
+package com.getbootstrap.savage.crypto
+
+sealed trait SignatureVerificationStatus
+
+object SuccessfullyVerified extends SignatureVerificationStatus
+
+trait FailedVerification extends SignatureVerificationStatus
+object FailedVerification extends SignatureVerificationStatus
+case class ExceptionDuringVerification(error: Throwable) extends FailedVerification
