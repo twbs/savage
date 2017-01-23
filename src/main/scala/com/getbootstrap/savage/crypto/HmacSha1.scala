@@ -1,9 +1,10 @@
-package com.getbootstrap.savage.util
+package com.getbootstrap.savage.crypto
 
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import java.security.{NoSuchAlgorithmException, InvalidKeyException, SignatureException}
 import java.security.MessageDigest
+import com.getbootstrap.savage.util.HexByteArray
 
 object HmacSha1 {
   private val HmacSha1Algorithm = "HmacSHA1"
