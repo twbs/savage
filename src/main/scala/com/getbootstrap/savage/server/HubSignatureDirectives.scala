@@ -3,7 +3,8 @@ package com.getbootstrap.savage.server
 import scala.util.{Try,Success,Failure}
 import spray.routing.{Directive1, MalformedHeaderRejection, MalformedRequestContentRejection, ValidationRejection}
 import spray.routing.directives.{BasicDirectives, HeaderDirectives, RouteDirectives, MarshallingDirectives}
-import com.getbootstrap.savage.util.{HmacSha1,Utf8ByteArray}
+import com.getbootstrap.savage.crypto.HmacSha1
+import com.getbootstrap.savage.util.Utf8ByteArray
 
 trait HubSignatureDirectives  {
   import BasicDirectives.provide
