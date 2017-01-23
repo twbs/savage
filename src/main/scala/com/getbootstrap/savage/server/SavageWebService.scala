@@ -69,7 +69,7 @@ class SavageWebService(
       path("travis") {
         pathEndOrSingleSlash {
           post {
-            authenticatedTravisEvent(travisToken = settings.TravisToken, repo = settings.TestRepoId, log = log) { event =>
+            authenticatedTravisEvent(travisPublicKey = settings.TravisPublicKey, testRepo = settings.TestRepoId, log = log) { event =>
               SavageBranch(event.branchName) match {
                 case Some(branch@SavageBranch(prNum, _)) => {
                   branchDeleter ! branch

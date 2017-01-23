@@ -5,5 +5,5 @@ sealed trait SignatureVerificationStatus
 object SuccessfullyVerified extends SignatureVerificationStatus
 
 trait FailedVerification extends SignatureVerificationStatus
-object FailedVerification extends SignatureVerificationStatus
+object FailedVerification extends FailedVerification
 case class ExceptionDuringVerification(error: Throwable) extends FailedVerification

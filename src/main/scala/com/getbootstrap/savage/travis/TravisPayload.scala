@@ -2,14 +2,23 @@ package com.getbootstrap.savage.travis
 
 import scala.util.{Try,Success,Failure}
 import spray.http.Uri
+import org.eclipse.egit.github.core.RepositoryId
 import com.getbootstrap.savage.github.{Branch, CommitSha}
 import com.getbootstrap.savage.travis.build_status.BuildStatus
+
+case class Repository(
+  owner_name: String,
+  name: String
+) {
+  def id: RepositoryId = RepositoryId.create(owner_name, name)
+}
 
 case class TravisPayload(
   status_message: String,
   build_url: String,
   branch: String,
-  commit: String
+  commit: String,
+  repository: Repository
 ) {
   def status: BuildStatus = BuildStatus(status_message).getOrElse{ throw new IllegalStateException(s"Invalid Travis build status message: ${status_message}") }
   def commitSha: CommitSha = CommitSha(commit).getOrElse{ throw new IllegalStateException(s"Invalid commit SHA: ${commit}") }

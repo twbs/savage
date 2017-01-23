@@ -10,6 +10,7 @@ import akka.actor.ExtensionIdProvider
 import akka.actor.ExtendedActorSystem
 import akka.util.ByteString
 import org.eclipse.egit.github.core.RepositoryId
+import com.getbootstrap.savage.crypto.RsaPublicKey
 import com.getbootstrap.savage.github.Branch
 import com.getbootstrap.savage.util.{FilePathWhitelist,FilePathWatchlist,Utf8String,RichConfig}
 
@@ -19,7 +20,7 @@ class SettingsImpl(config: Config) extends Extension {
   val BotUsername: String = config.getString("savage.username")
   val BotPassword: String = config.getString("savage.password")
   val GitHubWebHookSecretKey: ByteString = ByteString(config.getString("savage.github-web-hook-secret-key").utf8Bytes)
-  val TravisToken: String = config.getString("savage.travis-token")
+  val TravisPublicKey: RsaPublicKey = RsaPublicKey.fromPem(config.getString("savage.travis-public-key")).get
   val UserAgent: String = config.getString("spray.can.client.user-agent-header")
   val DefaultPort: Int = config.getInt("savage.default-port")
   val SquelchInvalidHttpLogging: Boolean = config.getBoolean("savage.squelch-invalid-http-logging")
