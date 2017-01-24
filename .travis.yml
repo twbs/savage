@@ -2,6 +2,8 @@ sudo: false
 language: scala
 scala:
   - 2.11.8
+jdk:
+  - oraclejdk8
 script:
   - sbt ++2.11.8 test
   # avoid unnecessary cache updates

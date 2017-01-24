@@ -16,7 +16,7 @@ If you're want to run Savage in [Docker](https://www.docker.com), you might want
 10. Edit `src/main/resources/application.conf` to configure your instance appropriately. See [the README](https://github.com/twbs/savage/blob/master/README.md#usage) for descriptions of all the available settings.
 11. Build Savage's all-in-one "assembly" JAR. See ["How do I generate a single self-sufficient JAR that includes all of the necessary dependencies?"](https://github.com/twbs/savage/blob/master/CONTRIBUTING.md#how-do-i-generate-a-single-self-sufficient-jar-that-includes-all-of-the-necessary-dependencies) for instructions on how to do that.
 12. Copy the Savage JAR to the location where you'll be running it on your server.
-13. Install Java 7+, Git, and OpenSSH in the environment where you will be running Savage.
+13. Install Java 8+, Git, and OpenSSH in the environment where you will be running Savage.
 14. Create a Unix user account for Savage. Use whatever username you want.
 15. As Savage's Unix user, run `ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts` to grab and confirm GitHub's SSH public key.
 16. Generate an SSH key for Savage's Unix user. (This will be used to securely pull-from/push-to GitHub.)

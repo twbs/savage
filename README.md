@@ -120,11 +120,22 @@ savage {
     // The HMAC is used to verify that Savage is really being contacted by GitHub,
     // and not by some random hacker.
     github-web-hook-secret-key = abcdefg
-    // Used as a shared secret in a hashing scheme that's used to verify
-    // that Savage is really being contacted by Travis CI,
+    // Travis's public RSA key.
+    // Used to verify the signatures of Webhook requests from Travis,
+    // to ensure that Savage is really being contacted by Travis CI,
     // and not by some random hacker. For how to find your Travis token,
-    // see http://docs.travis-ci.com/user/notifications/#Authorization-for-Webhooks
-    travis-token = abcdefg
+    // See https://docs.travis-ci.com/user/notifications/#Verifying-Webhook-requests
+    // If you're using travis-ci.org, then the key is the value of
+    // config.notifications.webhook.public_key on https://api.travis-ci.org/config
+    travis-public-key = """-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvtjdLkS+FP+0fPC09j25
+y/PiuYDDivIT86COVedvlElk99BBYTrqNaJybxjXbIZ1Q6xFNhOY+iTcBr4E1zJu
+tizF3Xi0V9tOuP/M8Wn4Y/1lCWbQKlWrNQuqNBmhovF4K3mDCYswVbpgTmp+JQYu
+Bm9QMdieZMNry5s6aiMA9aSjDlNyedvSENYo18F+NYg1J0C0JiPYTxheCb4optr1
+5xNzFKhAkuGs4XTOA5C7Q06GCKtDNf44s/CVE30KODUxBi0MCKaxiXw/yy55zxX2
+/YdGphIyQiA5iO1986ZmZCLLW8udz9uhW5jUr3Jlp9LbmphAC61bVSf4ou2YsJaN
+0QIDAQAB
+-----END PUBLIC KEY-----"""
 }
 ```
 
